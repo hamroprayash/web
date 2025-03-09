@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +62,6 @@
         }
     </style>
 </head>
-
 <body>
     <header>
         <h1 id="stationName">Station Name</h1>
@@ -87,9 +85,11 @@
         <button id="goBackButton">Go Back</button>
     </footer>
 
-    <script type="module">
-        import radioStations from './radio.js'; // Import the radio stations
+    <!-- Include the radio.js file -->
+    <script src="radio.js"></script>
 
+    <!-- Main JavaScript to handle player interactions -->
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const goBackButton = document.getElementById('goBackButton');
             const playPauseButton = document.getElementById('playPause');
@@ -100,11 +100,12 @@
             const stationNameElement = document.getElementById('stationName');
             const stationDetailsElement = document.getElementById('stationDetails');
 
+            // Retrieve the selected station index from localStorage
             const selectedStationIndex = localStorage.getItem('selectedStationIndex');
             let currentStationIndex = parseInt(selectedStationIndex, 10);
 
             const loadStation = (index) => {
-                const station = radioStations[index];
+                const station = getRadioStations()[index];
                 stationNameElement.textContent = station.name;
                 stationDetailsElement.innerHTML = `
                     <h2>Station Details</h2>
@@ -128,12 +129,12 @@
             });
 
             prevButton.addEventListener('click', () => {
-                currentStationIndex = (currentStationIndex - 1 + radioStations.length) % radioStations.length;
+                currentStationIndex = (currentStationIndex - 1 + getRadioStations().length) % getRadioStations().length;
                 loadStation(currentStationIndex);
             });
 
             nextButton.addEventListener('click', () => {
-                currentStationIndex = (currentStationIndex + 1) % radioStations.length;
+                currentStationIndex = (currentStationIndex + 1) % getRadioStations().length;
                 loadStation(currentStationIndex);
             });
 
@@ -142,12 +143,11 @@
             });
 
             goBackButton.addEventListener('click', () => {
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Go back to the main page
             });
 
-            loadStation(currentStationIndex);
+            loadStation(currentStationIndex); // Load the initially selected station
         });
     </script>
 </body>
-
 </html>
