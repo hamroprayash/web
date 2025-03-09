@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,18 +16,15 @@
             justify-content: center;
             text-align: center;
         }
-
         header {
             margin-top: 20px;
         }
-
         #radioListContainer {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 20px;
         }
-
         .radio-item {
             margin: 10px;
             padding: 15px;
@@ -37,11 +33,9 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-
         .radio-item:hover {
             transform: scale(1.05);
         }
-
         footer {
             padding: 15px;
             background-color: #f5f5f5;
@@ -52,13 +46,11 @@
             display: flex;
             justify-content: center;
         }
-
         footer button {
             padding: 10px 20px;
         }
     </style>
 </head>
-
 <body>
     <header>
         <h1>Radio Stations</h1>
@@ -71,13 +63,14 @@
         <button id="goToPlayerButton" style="display: none;">Go to Player</button>
     </footer>
 
-    <script type="module">
-        import radioStations from './radio.js'; // Import the radio stations
+    <!-- Include the radio.js file -->
+    <script src="radio.js"></script>
 
+    <!-- Main JavaScript to handle interactions -->
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search');
             const radioListContainer = document.getElementById('radioListContainer');
-            const goToPlayerButton = document.getElementById('goToPlayerButton');
 
             const renderRadioStations = (stations) => {
                 radioListContainer.innerHTML = '';
@@ -86,8 +79,8 @@
                     div.classList.add('radio-item');
                     div.innerHTML = `<h3>${station.name}</h3>`;
                     div.addEventListener('click', () => {
-                        localStorage.setItem('selectedStationIndex', index);
-                        window.location.href = 'player.html';
+                        localStorage.setItem('selectedStationIndex', index); // Store the selected station index
+                        window.location.href = 'player.html'; // Navigate to the player page
                     });
                     radioListContainer.appendChild(div);
                 });
@@ -95,13 +88,12 @@
 
             searchInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase();
-                const filteredStations = radioStations.filter(station => station.name.toLowerCase().includes(query));
+                const filteredStations = getRadioStations().filter(station => station.name.toLowerCase().includes(query));
                 renderRadioStations(filteredStations);
             });
 
-            renderRadioStations(radioStations); // Initial render of radio stations
+            renderRadioStations(getRadioStations()); // Initial render of radio stations
         });
     </script>
 </body>
-
 </html>
