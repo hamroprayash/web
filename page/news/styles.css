@@ -1,0 +1,92 @@
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.screen {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.news-buttons {
+    margin-top: 20px;
+}
+
+.news-buttons button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.news-buttons button:hover {
+    background: #0056b3;
+}
+
+.news-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.news-item {
+    background: white;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.news-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.news-item a:hover {
+    color: #007bff;
+}
+
+.news-item button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-button {
+    margin: 15px;
+    padding: 10px;
+    border: none;
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background: #c82333;
+}
