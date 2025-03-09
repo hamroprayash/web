@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamro Prayash</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <button id="menu-toggle">☰</button>
+        <h1>Hamro Prayash</h1>
+        <button id="theme-toggle">🌙</button>
+    </nav>
+
+    <main>
+        <h2>Welcome to Hamro Prayash</h2>
+        <p>Select a tool from below:</p>
+
+        <div class="tool-grid">
+            <button class="tool-card" onclick="window.location.href='tools/translator/index.html'"><i class="fas fa-language"></i> Translator</button>
+            <button class="tool-card" onclick="window.location.href='tools/text-encoder/index.html'"><i class="fas fa-keyboard"></i> Text Encoder</button>
+            <button class="tool-card" onclick="window.location.href='tools/date-converter/index.html'"><i class="fas fa-calendar-alt"></i> Date Converter</button>
+            <button class="tool-card" onclick="window.location.href='tools/hp-ai/index.html'"><i class="fas fa-robot"></i> HP AI</button>
+            <button class="tool-card" onclick="window.location.href='tools/html-editor/index.html'"><i class="fas fa-code"></i> HTML Editor</button>
+            <button class="tool-card" onclick="window.location.href='tools/video-downloader/index.html'"><i class="fas fa-download"></i> Video Downloader</button>
+            <button class="tool-card" onclick="window.location.href='tools/notepad/index.html'"><i class="fas fa-sticky-note"></i> Notepad</button>
+            <button class="tool-card" onclick="window.location.href='tools/password-generator/index.html'"><i class="fas fa-lock"></i> Password Generator</button>
+            <button class="tool-card" onclick="window.location.href='tools/link-maker/index.html'"><i class="fas fa-link"></i> Link Maker</button>
+            <button class="tool-card" onclick="window.location.href='tools/qr-scanner/index.html'"><i class="fas fa-qrcode"></i> QR Scanner</button>
+            <button class="tool-card" onclick="window.location.href='tools/radio/index.html'"><i class="fas fa-broadcast-tower"></i> Radio</button>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <footer class="bottom-nav">
+        <button class="bottom-nav-button" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Home</button>
+        <button class="bottom-nav-button" onclick="window.location.href='pages/news.html'"><i class="fas fa-newspaper"></i> News</button>
+        <button class="bottom-nav-button" onclick="window.location.href='pages/more.html'"><i class="fas fa-cogs"></i> More</button>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
