@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #faafe3;
+            color: #f0f0ff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #stationDetails {
+            margin-top: 20px;
+        }
+
+        #playerControls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005f73;
+        }
+
+        input[type="range"] {
+            margin-top: 10px;
+        }
+
+        footer {
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ccc;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        footer button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 id="stationName">Station Name</h1>
+    </header>
+
+    <div id="stationDetails"></div>
+
+    <audio id="audioPlayer" controls>
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="playerControls">
+        <button id="prevButton">Prev</button>
+        <button id="playPause">Play</button>
+        <button id="nextButton">Next</button>
+    </div>
+
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1" />
+
+    <footer>
+        <button id="goBackButton">Go Back</button>
+    </footer>
+
+    <script type="module">
+        import radioStations from './radio.js'; // Import the radio stations
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const goBackButton = document.getElementById('goBackButton');
+            const playPauseButton = document.getElementById('playPause');
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            const audioPlayer = document.getElementById('audioPlayer');
+            const volumeControl = document.getElementById('volumeControl');
+            const stationNameElement = document.getElementById('stationName');
+            const stationDetailsElement = document.getElementById('stationDetails');
+
+            const selectedStationIndex = localStorage.getItem('selectedStationIndex');
+            let currentStationIndex = parseInt(selectedStationIndex, 10);
+
+            const loadStation = (index) => {
+                const station = radioStations[index];
+                stationNameElement.textContent = station.name;
+                stationDetailsElement.innerHTML = `
+                    <h2>Station Details</h2>
+                    <p><strong>Name:</strong> ${station.name}</p>
+                    <p><strong>Description:</strong> ${station.description || 'No description available.'}</p>
+                    <p><strong>Location:</strong> ${station.address}</p>
+                `;
+                audioPlayer.src = station.streamUrl;
+                audioPlayer.load();
+                audioPlayer.play();
+            };
+
+            playPauseButton.addEventListener('click', () => {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playPauseButton.textContent = 'Pause';
+                } else {
+                    audioPlayer.pause();
+                    playPauseButton.textContent = 'Play';
+                }
+            });
+
+            prevButton.addEventListener('click', () => {
+                currentStationIndex = (currentStationIndex - 1 + radioStations.length) % radioStations.length;
+                loadStation(currentStationIndex);
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentStationIndex = (currentStationIndex + 1) % radioStations.length;
+                loadStation(currentStationIndex);
+            });
+
+            volumeControl.addEventListener('input', () => {
+                audioPlayer.volume = volumeControl.value;
+            });
+
+            goBackButton.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+
+            loadStation(currentStationIndex);
+        });
+    </script>
+</body>
+
+</html>
