@@ -46,7 +46,7 @@ function fetchNews() {
                     const title = item.querySelector("title").textContent;
                     const link = item.querySelector("link").textContent;
                     newsHtml += `<div class="news-item">
-                        <a href="${link}" target="_blank">${title}</a>
+                        <a href="#" onclick="fetchFullArticle('${link}')">${title}</a>
                         <button onclick="readNews('${title}')">🔊</button>
                     </div>`;
                 }
@@ -66,7 +66,39 @@ function readNews(text) {
     window.speechSynthesis.speak(speech);
 }
 
-// Fetch news when news page loads
+// Fetch full article text using Mozilla Readability.js
+async function fetchFullArticle(url) {
+    try {
+        let response = await fetch(url);
+        let html = await response.text();
+
+        // Parse the HTML using DOMParser
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(html, "text/html");
+
+        // Load Readability.js dynamically if not already available
+        if (typeof Readability === "undefined") {
+            let script = document.createElement("script");
+            script.src = "https://cdnjs.cloudflare.com/ajax/libs/readability/0.4.4/Readability.js";
+            document.head.appendChild(script);
+            await new Promise(resolve => script.onload = resolve);
+        }
+
+        // Extract article content
+        let article = new Readability(doc).parse();
+        const content = article?.content || "Failed to extract content";
+
+        // Display article in a modal or new page
+        document.getElementById("news").innerHTML = `<h2>${article.title}</h2>${content}<br>
+            <button onclick="fetchNews()">🔙 Back to News</button>`;
+
+    } catch (error) {
+        console.error("Error fetching article:", error);
+        document.getElementById("news").innerHTML = "<p>Failed to load article.</p>";
+    }
+}
+
+// Fetch news when the news page loads
 if (window.location.pathname.endsWith("news.html")) {
     fetchNews();
 }
