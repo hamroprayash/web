@@ -34,11 +34,17 @@ async function fetchNews() {
 
     try {
         const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Network response was not ok.");
         const data = await response.json();
 
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data.contents, "text/xml");
         const items = xmlDoc.querySelectorAll("item");
+
+        if (items.length === 0) {
+            newsContainer.innerHTML = "<p>No news found.</p>";
+            return;
+        }
 
         let newsHtml = "";
         items.forEach((item, index) => {
@@ -55,7 +61,7 @@ async function fetchNews() {
         newsContainer.innerHTML = newsHtml || "<p>No news found.</p>";
     } catch (error) {
         console.error("Error fetching news:", error);
-        newsContainer.innerHTML = "<p>Failed to load news.</p>";
+        newsContainer.innerHTML = "<p>Failed to load news. Please try again later.</p>";
     }
 }
 
@@ -68,6 +74,7 @@ async function fetchFullArticle(url) {
 
     try {
         const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Network response was not ok.");
         const data = await response.json();
 
         const parser = new DOMParser();
