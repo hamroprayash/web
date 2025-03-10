@@ -1,3 +1,4 @@
+
 // RSS Feed URLs for different news sources
 const rssFeeds = {
     bbc: { url: "https://feeds.bbci.co.uk/news/rss.xml", name: "BBC News" },
@@ -29,14 +30,14 @@ async function fetchNews() {
     }
 
     const rssUrl = rssFeeds[source].url;
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
 
     try {
         const response = await fetch(proxyUrl);
-        const data = await response.text();
+        const data = await response.json();
 
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data, "text/xml");
+        const xmlDoc = parser.parseFromString(data.contents, "text/xml");
         const items = xmlDoc.querySelectorAll("item");
 
         let newsHtml = "";
@@ -60,19 +61,19 @@ async function fetchNews() {
 
 // Fetch full article content
 async function fetchFullArticle(url) {
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
     const newsContainer = document.getElementById("news");
-
     newsContainer.innerHTML = "<p>Loading full article...</p>";
+
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
 
     try {
         const response = await fetch(proxyUrl);
-        const data = await response.text();
+        const data = await response.json();
 
         const parser = new DOMParser();
-        const doc = parser.parseFromString(data, "text/html");
+        const doc = parser.parseFromString(data.contents, "text/html");
 
-        // Ensure Readability is loaded
+        // Check if Readability is available
         if (typeof Readability === "undefined") {
             let script = document.createElement("script");
             script.src = "https://cdnjs.cloudflare.com/ajax/libs/readability/0.4.4/Readability.js";
