@@ -1,5 +1,5 @@
 
-// RSS Feed URLs for different news sources
+// RSS Feed URLs
 const rssFeeds = {
     bbc: { url: "https://feeds.bbci.co.uk/news/rss.xml", name: "BBC News" },
     cnn: { url: "https://rss.cnn.com/rss/edition.rss", name: "CNN News" },
@@ -7,17 +7,12 @@ const rssFeeds = {
 };
 
 function openNews(source) {
-    if (!rssFeeds[source]) return;
-
-    // Save selected news source in localStorage
     localStorage.setItem('newsSource', source);
-
-    // Redirect to the news page
-    window.location.href = "news.html";
+    window.location.href = "news.html"; // Redirect to news page
 }
 
 function goBack() {
-    window.location.href = "index.html"; // Go back to the main screen
+    window.location.href = "index.html"; // Go back to main page
 }
 
 function fetchNews() {
@@ -66,17 +61,19 @@ function readNews(text) {
     window.speechSynthesis.speak(speech);
 }
 
-// Fetch full article text using Mozilla Readability.js
 async function fetchFullArticle(url) {
     try {
-        let response = await fetch(url);
-        let html = await response.text();
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
 
-        // Parse the HTML using DOMParser
+        let response = await fetch(proxyUrl);
+        let data = await response.json();
+        let html = data.contents;
+
+        // Parse HTML with DOMParser
         let parser = new DOMParser();
         let doc = parser.parseFromString(html, "text/html");
 
-        // Load Readability.js dynamically if not already available
+        // Load Readability.js dynamically if not available
         if (typeof Readability === "undefined") {
             let script = document.createElement("script");
             script.src = "https://cdnjs.cloudflare.com/ajax/libs/readability/0.4.4/Readability.js";
@@ -84,11 +81,11 @@ async function fetchFullArticle(url) {
             await new Promise(resolve => script.onload = resolve);
         }
 
-        // Extract article content
+        // Extract clean article text
         let article = new Readability(doc).parse();
         const content = article?.content || "Failed to extract content";
 
-        // Display article in a modal or new page
+        // Display article in news div
         document.getElementById("news").innerHTML = `<h2>${article.title}</h2>${content}<br>
             <button onclick="fetchNews()">🔙 Back to News</button>`;
 
@@ -98,7 +95,7 @@ async function fetchFullArticle(url) {
     }
 }
 
-// Fetch news when the news page loads
+// Load news when news page opens
 if (window.location.pathname.endsWith("news.html")) {
     fetchNews();
 }
